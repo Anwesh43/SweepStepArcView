@@ -202,4 +202,13 @@ class BouncySweepStepView(ctx : Context) : View(ctx) {
             }
         }
     }
+
+    companion object {
+
+        fun create(activity : Activity) : BouncySweepStepView {
+            val view : BouncySweepStepView = BouncySweepStepView(activity)
+            activity.setContentView(view)
+            return view
+        }
+    }
 }
