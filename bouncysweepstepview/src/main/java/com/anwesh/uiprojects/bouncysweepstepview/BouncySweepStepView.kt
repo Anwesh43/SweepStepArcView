@@ -179,4 +179,26 @@ class BouncySweepStepView(ctx : Context) : View(ctx) {
             curr.startUpdating(cb)
         }
     }
+
+    data class Renderer(var view : BouncySweepStepView) {
+
+        private val animator : Animator = Animator(view)
+        private val bssa : BouncySweepStepArc = BouncySweepStepArc(0)
+
+        fun render(canvas : Canvas, paint : Paint) {
+            canvas.drawColor(backColor)
+            bssa.draw(canvas, paint)
+            animator.animate {
+                bssa.update {
+                    animator.stop()
+                }
+            }
+        }
+
+        fun handleTap() {
+            bssa.startUpdating {
+                animator.start()
+            }
+        }
+    }
 }
