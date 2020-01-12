@@ -15,7 +15,7 @@ import android.graphics.Canvas
 
 val nodes : Int = 5
 val steps : Int = 5
-val scGap : Float = 0.02f
+val scGap : Float = 0.02f / steps
 val strokeFactor : Int = 90
 val delay : Long = 20
 val foreColor : Int = Color.parseColor("#01579B")
@@ -31,10 +31,12 @@ fun Canvas.drawSweepStepArc(w : Float, scale : Float, paint : Paint) {
     val sf : Float = scale.sinify()
     val i : Int = (sf / sk).toInt()
     val sfi : Float = sf.divideScale(i, steps)
+    val sfi1 : Float = sfi.divideScale(0, 2)
+    val sfi2 : Float = sfi.divideScale(1, 2)
     val gap : Float = w / steps
     save()
     translate(gap * i + gap / 2, 0f)
-    drawArc(RectF(-gap / 2, -gap / 2, gap / 2, gap / 2), 180f, 180f * sfi, false, paint)
+    drawArc(RectF(-gap / 2, -gap / 2, gap / 2, gap / 2), 180f + 180F * sfi2, 180f * (sfi1 - sfi2), false, paint)
     restore()
 }
 
@@ -45,6 +47,7 @@ fun Canvas.drawSSANode(i : Int, scale : Float, paint : Paint) {
     paint.color = foreColor
     paint.strokeCap = Paint.Cap.ROUND
     paint.strokeWidth = Math.min(w, h) / strokeFactor
+    paint.style = Paint.Style.STROKE
     save()
     translate(0f, gap * (i + 1))
     drawSweepStepArc(w, scale, paint)
